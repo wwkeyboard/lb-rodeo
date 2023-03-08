@@ -1,15 +1,24 @@
+use std::net::SocketAddr;
+
 use clap::Parser;
+use warp::Filter;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
     /// port this server will listen for connections on
     #[arg(short, long)]
-    port: String,
+    addr: String,
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let args = Args::parse();
+    let addr: SocketAddr = args.addr.parse().unwrap();
 
-    println!("Hello from the client - {}!", args.port)
+    println!("Hello from the client - {}!", args.addr);
+
+    let echo = warp::path!("echo").map(|| format!("pong"));
+
+    warp::serve(echo).run(addr).await;
 }
