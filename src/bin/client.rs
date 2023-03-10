@@ -9,8 +9,12 @@ struct Args {
     target: String,
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let args = Args::parse();
 
-    println!("Hello from the client - {}!", args.target)
+    println!("Hello from the client - {}!", args.target);
+
+    let resp = reqwest::get(args.target)
+        .await.unwrap();
 }
