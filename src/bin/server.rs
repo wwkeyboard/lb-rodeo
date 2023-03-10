@@ -18,7 +18,10 @@ async fn main() {
 
     println!("Hello from the server - {}!", args.addr);
 
-    let echo = warp::path!("echo").map(|| format!("pong"));
+    let echo = warp::path!("echo").map(|| {
+        println!("-- request!");
+        format!("pong")
+    });
 
     warp::serve(echo).run(addr).await;
 }
