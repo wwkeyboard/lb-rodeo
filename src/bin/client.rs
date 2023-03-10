@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use clap::Parser;
 
 /// Simple program to greet a person
@@ -17,8 +18,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let resp = reqwest::get(args.target)
         .await?
-        .text()
+        .json::<HashMap<String, String>>()
         .await?;
+
     println!("got back = {:?}", resp);
     Ok(())
 }
