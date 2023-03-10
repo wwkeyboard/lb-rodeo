@@ -16,7 +16,7 @@ async fn main() {
     let args = Args::parse();
     let addr: SocketAddr = args.addr.parse().unwrap();
 
-    println!("Hello from the client - {}!", args.addr);
+    println!("Hello from the server - {}!", args.addr);
 
     let echo = warp::path!("echo").map(|| format!("pong"));
 
