@@ -13,7 +13,7 @@ struct Args {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
-
+ 
     println!("Hello from the client - {}!", args.target);
 
     let resp = reqwest::get(args.target)

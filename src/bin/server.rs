@@ -1,7 +1,8 @@
 use std::net::SocketAddr;
 
+use axum::{http::StatusCode, routing::get, Json, Router};
 use clap::Parser;
-use warp::Filter;
+use serde::Serialize;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -18,10 +19,27 @@ async fn main() {
 
     println!("Hello from the server - {}!", args.addr);
 
-    let echo = warp::path!("echo").map(|| {
-        println!("-- request!");
-        format!("pong")
-    });
+    let app = Router::new()
+        .route("/", get(echo))
+        .route("/echo", get(echo));
 
-    warp::serve(echo).run(addr).await;
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+
+async fn echo(payload: String) -> (StatusCode, Json<Echo>) {
+    println!(" - {:?}", &payload);
+    let echo = Echo {
+        source: 1,
+        payload: payload,
+    };
+    (StatusCode::CREATED, Json(echo))
+}
+
+#[derive(Serialize)]
+struct Echo {
+    source: usize,
+    payload: String,
 }
