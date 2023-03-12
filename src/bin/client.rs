@@ -1,5 +1,6 @@
-use std::collections::HashMap;
 use clap::Parser;
+use std::collections::HashMap;
+use anyhow::Result;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -13,14 +14,22 @@ struct Args {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
- 
+
     println!("Hello from the client - {}!", args.target);
 
-    let resp = reqwest::get(args.target)
+    tokio::spawn(async move { 
+        make_request(args.target.clone()).await 
+    });
+
+    //println!("got back = {:?}", resp);
+    Ok(())
+}
+
+async fn make_request(target: String) -> Result<()> {
+    let resp = reqwest::get(target)
         .await?
         .json::<HashMap<String, String>>()
         .await?;
 
-    println!("got back = {:?}", resp);
     Ok(())
 }
