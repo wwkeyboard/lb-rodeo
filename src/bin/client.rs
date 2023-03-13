@@ -10,6 +10,10 @@ struct Args {
     /// address of the LB to test
     #[arg(short, long)]
     target: String,
+
+    /// delay in ms between requests
+    #[arg(short, long)]
+    delay: u64,
 }
 
 #[tokio::main]
@@ -20,10 +24,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     loop {
         let target = args.target.clone();
-        tokio::spawn(async move {
-            make_request(target).await
-        });
-        sleep(Duration::from_millis(500)).await;
+        tokio::spawn(async move { make_request(target).await });
+        sleep(Duration::from_millis(args.delay)).await;
     }
 }
 
