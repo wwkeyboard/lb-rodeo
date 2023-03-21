@@ -10,8 +10,12 @@ Instead you should put a load balancer between the two.
 
 # Server
 
-A simple HTTP server. Future plans include adding pathologies to the server like random errors, slow responses, or huge responses, things that would cause a naive balancing algorithm problems.
+A simple HTTP server. Future plans include adding pathologies to the server
+like random errors, slow responses, or huge responses, things that would cause
+a naive balancing algorithm problems.
 
 # Client
 
-Makes repeated requests and checks that those requests are resolved correctly. I'm still working on the best way to show what the client is thinking, so if anyone has ideas please let me know.
+Makes repeated requests and checks that those requests are resolved correctly.
+I'm still working on the best way to show what the client is thinking, so if
+anyone has ideas please let me know.
