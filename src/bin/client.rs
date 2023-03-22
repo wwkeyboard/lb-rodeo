@@ -1,9 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
-use std::collections::HashMap;
-use tokio::time::{sleep, Duration};
-use reqwest::Client;
 use serde::Serialize;
+use tokio::time::{sleep, Duration};
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -33,14 +31,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 async fn make_request(target: String) -> Result<()> {
     println!("requesting - ");
-    
-    let payload = Request{id: 1};
+
+    let payload = Request { id: 1 };
     let client = reqwest::Client::new();
 
-    let resp = client.post(target)
-        .json(&payload)
-        .send()
-        .await?;
+    let resp = client.post(target).json(&payload).send().await?;
 
     println!("got back = {:?}", resp);
     Ok(())
@@ -48,5 +43,5 @@ async fn make_request(target: String) -> Result<()> {
 
 #[derive(Serialize)]
 struct Request {
-    id: u64
+    id: u64,
 }
