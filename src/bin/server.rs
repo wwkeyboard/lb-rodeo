@@ -1,6 +1,10 @@
 use std::net::SocketAddr;
 
-use axum::{http::StatusCode, routing::{get, post}, Json, Router};
+use axum::{
+    http::StatusCode,
+    routing::{get, post},
+    Json, Router,
+};
 use clap::Parser;
 use serde::Serialize;
 
@@ -31,10 +35,7 @@ async fn main() {
 
 async fn echo(payload: String) -> (StatusCode, Json<Echo>) {
     println!(" - {:?}", &payload);
-    let echo = Echo {
-        source: 1,
-        payload,
-    };
+    let echo = Echo { source: 1, payload };
     (StatusCode::CREATED, Json(echo))
 }
 
